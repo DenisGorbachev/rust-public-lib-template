@@ -1463,13 +1463,14 @@ mod tests {
 
 ```toml
 [package]
-name = "rust-private-lib-template"
+name = "rust-public-lib-template"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.85.0"
-description = "A template for creating Rust private repositories."
-homepage = "https://github.com/DenisGorbachev/rust-private-template"
-repository = "https://github.com/DenisGorbachev/rust-private-template"
+description = "A template for a public Rust library"
+license = "Apache-2.0 OR MIT"
+homepage = "https://github.com/DenisGorbachev/rust-public-lib-template"
+repository = "https://github.com/DenisGorbachev/rust-public-lib-template"
 readme = "README.md"
 keywords = []
 categories = []
@@ -1491,7 +1492,7 @@ exclude = [
 ]
 
 [package.metadata.details]
-title = "Rust private template"
+title = "A template for a public Rust library"
 tagline = ""
 summary = ""
 announcement = ""
@@ -1500,12 +1501,11 @@ readme = { generate = false }
 [dependencies]
 derive-getters = { version = "0.5.0", features = ["auto_copy_getters"] }
 derive-new = "0.7.0"
-derive_more = { version = "2.0.1", features = ["full"] }
+derive_more = { version = "2.1.1", features = ["full"] }
 errgonomic = { git = "https://github.com/DenisGorbachev/errgonomic" }
-fmt-derive = "0.1.2"
 standard-traits = { git = "https://github.com/DenisGorbachev/standard-traits" }
-strum = { version = "0.27.1", features = ["derive"] }
-stub-macro = { version = "0.1.3" }
+strum = { version = "0.27.2", features = ["derive"] }
+stub-macro = { version = "0.2.1" }
 subtype = { git = "https://github.com/DenisGorbachev/subtype" }
 
 [package.metadata.cargo-machete]
@@ -1513,7 +1513,6 @@ ignored = [
     "derive-getters",
     "derive-new",
     "derive_more",
-    "fmt-derive",
     "errgonomic",
     "standard-traits",
     "strum",
