@@ -6,6 +6,7 @@ A structure with the following fields:
 
 * Name (required [name](#name) value)
 * Definition (required [definition](#definition) value)
+* Synonyms (optional list of string values)
 * Constructors (optional list of [constructor](#constructor) values that contains all possible constructors of a concept)
 * Examples (optional [listmap](#listmap) of [example](#example) values)
 * Requirements (optional [listmap](#listmap) of [requirement](#requirement) values)
