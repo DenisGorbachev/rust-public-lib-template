@@ -6,10 +6,12 @@ A structure with the following fields:
 
 * Name (required [name](#name) value)
 * Definition (required [definition](#definition) value)
+* Synonyms (optional list of string values)
 * Constructors (optional list of [constructor](#constructor) values that contains all possible constructors of a concept)
 * Examples (optional [listmap](#listmap) of [example](#example) values)
 * Requirements (optional [listmap](#listmap) of [requirement](#requirement) values)
 * Preferences (optional [listmap](#listmap) of [preference](#preference) values)
+* Properties (optional [listmap](#listmap) of [property](#property) values)
 * Notes (optional [listmap](#listmap) of [note](#note) values)
 
 Examples:
@@ -31,16 +33,17 @@ Notes:
 
 ## Definition
 
-A single sentence that defines a concept.
+A string value that defines a concept.
 
 Requirements:
 
-* Must end with a period.
+* If it's a single sentence: must end with a period.
 
 Non-requirements:
 
 * May start with an article ("A", "An", "The").
 * May start with the name of the concept being defined.
+* May be a multiline string
 
 ## Constructor
 
@@ -66,6 +69,10 @@ Notes:
 
 * Preferences must be sorted by importance (most important first).
 * Preferences should be used to make a choice between two inputs that pass the [requirements](#requirement).
+
+## Property
+
+A [stringtree](#stringtree) that [represents](#representation) a property of an instance of a [concept](#concept).
 
 ## Note
 
