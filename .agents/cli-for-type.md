@@ -159,10 +159,9 @@ Examples:
             let Self {
                 page,
             } = self;
-            let stdout = stdout();
+            let mut stdout = stdout();
             let users = handle!(client.users(page), UsersFailed, page);
-            // TODO: Fix error handling
-            serde_json::to_writer_pretty(&mut stdout, &users).unwrap();
+            handle!(serde_json::to_writer_pretty(&mut stdout, &users), ToWriterPrettyFailed, users);
             Ok(())
         }
     }
@@ -171,6 +170,8 @@ Examples:
     pub enum FooUsersCommandRunError {
         #[error("failed to fetch users for page '{page}'")]
         UsersFailed { source: FooClientUsersError, page: UsersPage },
+        #[error("failed to write users to stdout")]
+        ToWriterPrettyFailed { source: serde_json::Error, users: Vec<User> },
     }
 
     #[derive(Parser, Debug)]
@@ -233,9 +234,9 @@ Requirements:
 - Must have a field for each argument of the wrapped method.
 - Must call the wrapped method in its run implementation.
 - Must return an error type that wraps the method error and the relevant argument values.
-- Must display the results on stdout in an efficient way:
-- Must serialize the results using `serde_json`
-- Must use `serde_json::to_writer_pretty`
+- Must write the results to stdout in an efficient way:
+  - Must serialize the results using `serde_json`
+  - Must use `serde_json::to_writer_pretty`
 
 Notes:
 
