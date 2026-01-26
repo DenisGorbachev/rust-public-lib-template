@@ -21,9 +21,7 @@ Examples:
     use FooSubcommand::*;
 
     subtype! {
-
         #[derive(Clone, Debug)]
-
         pub struct FooApiKey(SecretString)
     }
 
@@ -71,15 +69,13 @@ Examples:
         }
     }
 
-## [derive(Clone, Debug)]
-
+    #[derive(Clone, Debug)]
     pub struct User {
         pub id: UserId,
         pub name: UserName,
     }
 
-## [derive(new)]
-
+    #[derive(new)]
     pub struct FooClient {
         api_key: FooApiKey,
     }
@@ -98,41 +94,30 @@ Examples:
         }
     }
 
-## [derive(Error, Debug)]
 
+    #[derive(Error, Debug)]
     pub enum FooClientUsersError {
-
         #[error("foo client users operation is not implemented")]
-
         NotImplemented {},
     }
 
-## [derive(Error, Debug)]
-
+    #[derive(Error, Debug)]
     pub enum FooClientSetUserNameError {
-
         #[error("foo client set user name operation is not implemented")]
-
         NotImplemented {},
     }
 
-## [derive(Parser, Debug)]
-
-## [command(author, version, about, propagate_version = true)]
-
+    #[derive(Parser, Debug)]
+    #[command(author, version, about, propagate_version = true)]
     pub struct FooCommand {
-
         #[arg(long, env = "FOO_API_KEY")]
-
         api_key: FooApiKey,
 
         #[command(subcommand)]
-
         subcommand: FooSubcommand,
     }
 
-## [derive(Subcommand, Clone, Debug)]
-
+    #[derive(Subcommand, Clone, Debug)]
     pub enum FooSubcommand {
         Users(FooUsersCommand),
         SetUserName(FooSetUserNameCommand),
@@ -153,25 +138,18 @@ Examples:
         }
     }
 
-## [derive(Error, Debug)]
-
+    #[derive(Error, Debug)]
     pub enum FooCommandRunError {
-
         #[error("failed to run users command")]
-
         UsersCommandRunFailed { source: FooUsersCommandRunError },
-
+    
         #[error("failed to run set user name command")]
-
         SetUserNameCommandRunFailed { source: FooSetUserNameCommandRunError },
     }
 
-## [derive(Parser, Debug)]
-
+    #[derive(Parser, Debug)]
     pub struct FooUsersCommand {
-
         #[arg(long)]
-
         page: UsersPage,
     }
 
@@ -189,25 +167,18 @@ Examples:
         }
     }
 
-## [derive(Error, Debug)]
-
+    #[derive(Error, Debug)]
     pub enum FooUsersCommandRunError {
-
         #[error("failed to fetch users for page '{page}'")]
-
         UsersFailed { source: FooClientUsersError, page: UsersPage },
     }
 
-## [derive(Parser, Debug)]
-
+    #[derive(Parser, Debug)]
     pub struct FooSetUserNameCommand {
-
         #[arg(long)]
-
         user_id: UserId,
 
         #[arg(long)]
-
         name: UserName,
     }
 
@@ -223,52 +194,49 @@ Examples:
         }
     }
 
-## [derive(Error, Debug)]
-
+    #[derive(Error, Debug)]
     pub enum FooSetUserNameCommandRunError {
-
         #[error("failed to set user name '{name}' for user '{user_id}'")]
-
         SetUserNameFailed { source: FooClientSetUserNameError, user_id: UserId, name: UserName },
     }
-    
-    Requirements:
-    
-    - Must be constructible by the parent command.
-    - Must expose at least one public method that can be invoked by a child command.
-    
-    Notes:
-    
-    - The target type should not parse CLI arguments itself.
-    
-    ## Parent command
-    
-    The command that constructs the target type and delegates execution to the selected child command.
-    
-    Requirements:
-    
-    - Must have fields for all inputs needed to construct the target type.
-    - Must construct an instance of the target type.
-    - Must pass the constructed instance of the target type to the selected child command.
-    
-    Notes:
-    
-    - The parent command isolates CLI parsing from domain logic.
-    
-    ## Child command
-    
-    A subcommand that wraps one target-type method and maps CLI arguments to that method.
-    
-    Requirements:
-    
-    - Must have a field for each argument of the wrapped method.
-    - Must call the wrapped method in its run implementation.
-    - Must return an error type that wraps the method error and the relevant argument values.
-    - Must display the results on stdout in an efficient way:
-    - Must serialize the results using `serde_json`
-    - Must use `serde_json::to_writer_pretty`
-    
-    Notes:
-    
-    - Child commands should not construct the target type themselves.
-```
+    ```
+
+Requirements:
+
+- Must be constructible by the parent command.
+- Must expose at least one public method that can be invoked by a child command.
+
+Notes:
+
+- The target type should not parse CLI arguments itself.
+
+## Parent command
+
+The command that constructs the target type and delegates execution to the selected child command.
+
+Requirements:
+
+- Must have fields for all inputs needed to construct the target type.
+- Must construct an instance of the target type.
+- Must pass the constructed instance of the target type to the selected child command.
+
+Notes:
+
+- The parent command isolates CLI parsing from domain logic.
+
+## Child command
+
+A subcommand that wraps one target-type method and maps CLI arguments to that method.
+
+Requirements:
+
+- Must have a field for each argument of the wrapped method.
+- Must call the wrapped method in its run implementation.
+- Must return an error type that wraps the method error and the relevant argument values.
+- Must display the results on stdout in an efficient way:
+- Must serialize the results using `serde_json`
+- Must use `serde_json::to_writer_pretty`
+
+Notes:
+
+- Child commands should not construct the target type themselves.
