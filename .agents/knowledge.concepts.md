@@ -80,7 +80,12 @@ Requirements:
     * The item resolver should interpret the query according to the file format:
       * Examples:
         * Markdown resolver should interpret the query as a sequence of headings, followed by an offset of the item starting from the latest heading in the query.
-* Must have a fragment that is equal to the hash of the item as string:
+* Must have a fragment that is equal to the hash of the item in its canonical byte representation:
+  * Hash function: SHA-256.
+  * Fragment encoding: lowercase hex string of the 32-byte digest.
+  * Canonical byte representation:
+    * The item is the exact byte slice returned by the item resolver (without normalization).
+      * For text formats, the resolver must return the exact byte slice from the file contents.
   * Reasons:
     * The [observer](#observer) may output a different informal knowledge base each time
       * Some items may be modified by external actors that have write permissions on [source](#lore-source)
@@ -90,7 +95,7 @@ Requirements:
 
 Examples:
 
-* "file://docs.polymarket.com/developers/CLOB/authentication.md?Authentication/L1+Authentication/CLOB+Client/0#5b764515bed48bc5481c30c0f0ae177ede545b8a"
+* "file://docs.polymarket.com/developers/CLOB/authentication.md?Authentication/L1+Authentication/CLOB+Client/0#e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   * Notes:
     * "docs.polymarket.com" is a local dir name, not a domain
 
@@ -116,7 +121,13 @@ A [theory](#theory) that has been obtained through a formally defined experiment
 
 Examples:
 
-* Uniqueness of a value within a dataset.
+* The `/markets` endpoint of Polymarket API returns an array of markets with max length of 1000.
+* In the complete set of markets obtained from `/markets` endpoint, the `market_slug` field has unique values.
+* Some markets have a `question_id` set to an empty string.
+
+Notes:
+
+* Some knowledge can be obtained only through experiments.
 
 ## Formalization
 
