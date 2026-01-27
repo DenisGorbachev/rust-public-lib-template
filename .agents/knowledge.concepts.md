@@ -80,7 +80,7 @@ Requirements:
     * The item resolver should interpret the query according to the file format:
       * Examples:
         * Markdown resolver should interpret the query as a sequence of headings, followed by an offset of the item starting from the latest heading in the query.
-* Must have an anchor that is equal to the hash of the item as string:
+* Must have a fragment that is equal to the hash of the item as string:
   * Reasons:
     * The [observer](#observer) may output a different informal knowledge base each time
       * Some items may be modified by external actors that have write permissions on [source](#lore-source)
@@ -144,7 +144,7 @@ Notes:
 
 ## Reference A is more precise than Reference B
 
-Reference A is more precise than Reference B if Reference A is a child of Reference B.
+[Reference A](#lore-item-reference) is more precise than [Reference B](#lore-item-reference) if Reference B is a prefix of Reference A when compared without the hash fragments.
 
 Examples:
 
