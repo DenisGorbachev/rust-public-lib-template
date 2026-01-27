@@ -6,14 +6,15 @@ A program that downloads [informal knowledge](#informal-knowledge) from external
 
 Requirements:
 
-* Must accept a `dir` as the last positional parameter
+* Must accept a `dir` as the last positional parameter (the target local directory)
 * Must atomically replace the old directory with a new directory
 * Must write the new directory into a temp path
-  * Must persist the temp path on disk, so that it would be possible for the user to debug a potential error in the command
+  * Must use a persistent temp path, so that it would be possible for the user to debug a potential error in the command
+  * Must remove the temp path only after successfully replacing the old directory with a new directory
 
 ## Informal knowledge
 
-A set of bytelists that represents the knowledge about an external system.
+A set of byte arrays that represents the knowledge about an external system.
 
 Examples:
 
