@@ -2,23 +2,23 @@
 
 ## Observer
 
-A program that downloads [informal knowledge](#informal-knowledge) from [source](#informal-knowledge-source) and writes it into a local directory.
+A program that downloads [lore](#lore) from [source](#lore-source) into the local filesystem.
 
 Requirements:
 
-* Must accept a `dir` as the last positional parameter (the target local directory)
+* Must accept a `path` as the last positional parameter (the target local directory)
 * Must atomically replace the old directory with a new directory
-  * Create the temp directory in the same parent directory as `dir` (suffix: ".new") (same filesystem required for atomic rename)
-  * Build the new contents fully inside the temp directory
-  * Fsync files and the temp directory (best-effort where supported)
-  * If `dir` exists, rename it to a backup name in the same parent directory (suffix: ".old")
-  * Rename the temp directory to `dir` (atomic on POSIX and Windows when same filesystem)
-  * If the final rename fails, attempt to restore the backup and keep the temp directory for debugging
-  * After a successful replace, remove the backup directory
+  * Create the temp path in the same parent directory as `path` (suffix: ".new") (same filesystem required for atomic rename)
+  * Build the new contents fully inside the temp path
+  * Fsync files and the temp path (best-effort where supported)
+  * If `path` exists, rename it to a backup name in the same parent directory (suffix: ".old")
+  * Rename the temp path to `path` (atomic on POSIX and Windows when same filesystem)
+  * If the final rename fails, attempt to restore the backup and keep the temp path for debugging
+  * After a successful replace, remove the backup path
 
-## Informal knowledge
+## Lore
 
-A directory that represents the knowledge about an external system.
+A string that represents some informal knowledge about an external system.
 
 Notes:
 
@@ -36,9 +36,21 @@ Notes:
     * Every valid Markdown file has an internal tree structure
 * Some informal knowledge files may have [divergent content and extension](#divergent-file-content-and-file-extension-for-a-specific-validator-map)
 
-## Informal knowledge source
+## Lore dir
 
-A string that uniquely identifies a subset of informal knowledge.
+A directory with [lore files](#lore-file).
+
+## Lore file
+
+A file that contains [lore](#lore).
+
+## Lore root
+
+The top-level [lore dir](#lore-dir).
+
+## Lore source
+
+A structure with `label` and `locator` string fields that uniquely identifies a subset of informal knowledge.
 
 Examples:
 
@@ -48,33 +60,51 @@ Examples:
 
 Notes:
 
-* The examples are a map from a source name to a source value.
+* Lore source may be formatted as a key-value pair (see examples).
+* Lore source is identified by its `locator` (the `label` is just a human-readable note).
 
-## Informal knowledge reference
+## Lore item reference
 
-TODO
+A URI that uniquely identifies a substring relative to the [lore root](#lore-root).
 
 Requirements:
 
-* Must be a hash of content:
+* Must have a "file://" scheme.
+* Must have a path (interpreted as the path to the lore file relative to the [lore root](#lore-root))
+* May have a query (interpreted as the path to the item within the file)
+  * Requirements
+    * Must not start with "/"
+    * Must be delimited by "/"
+    * The path elements must be URL-encoded
+  * Notes:
+    * The item resolver should interpret the query according to the file format:
+      * Examples:
+        * Markdown resolver should interpret the query as a sequence of headings, followed by an offset of the item starting from the latest heading in the query.
+* Must have an anchor that is equal to the hash of the item as string:
   * Reasons:
-    * The [observer](#observer) may return different content each time
-      * Some content may be modified by external actors that have write permissions on [source](#informal-knowledge-source)
-      * Some content may be modified as a result of external API calls
+    * The [observer](#observer) may output a different informal knowledge base each time
+      * Some items may be modified by external actors that have write permissions on [source](#lore-source)
+      * Some items may be modified as a result of external API calls
         * Examples:
           * The list of trades may be extended due to new orders being placed and matched.
 
-## Formal knowledge
+Examples:
+
+* "file://docs.polymarket.com/developers/CLOB/authentication.md?Authentication/L1+Authentication/CLOB+Client/0#5b764515bed48bc5481c30c0f0ae177ede545b8a"
+  * Notes:
+    * "docs.polymarket.com" is a local dir name, not a domain
+
+## Theory
 
 A set of declarations in a specific formal language.
 
 Requirements:
 
-* Every declaration must contain a [reference](#informal-knowledge-reference) to a specific element of the informal knowledge
+* Every declaration must contain a [reference](#lore-item-reference) to a specific item of the informal knowledge
 
 Preferences:
 
-* Declaration A is better than Declaration B if Declaration A [reference](#informal-knowledge-reference) is more precise than Declaration B [reference](#informal-knowledge-reference) and other properties are equal.
+* Declaration A is better than Declaration B if Declaration A [reference](#lore-item-reference) is more precise than Declaration B [reference](#lore-item-reference) and other properties are equal.
 
 Notes:
 
@@ -82,7 +112,7 @@ Notes:
 
 ## Experimental knowledge
 
-A [formal knowledge](#formal-knowledge) that has been obtained through a formally defined experiment.
+A [theory](#theory) that has been obtained through a formally defined experiment.
 
 Examples:
 
@@ -90,26 +120,27 @@ Examples:
 
 ## Formalization
 
-A process whose input is [informal knowledge](#informal-knowledge) and output is [formal knowledge](#formal-knowledge) that doesn't have internal contradictions.
+A process whose input is [lore](#lore-dir) and output is [formal knowledge](#theory) that doesn't have internal contradictions.
 
 Note:
 
 * Formalization is not mechanical (requires an "interpreter" entity (not defined in this document)).
-* A single informal knowledge base may be related to multiple formal knowledge bases without internal contradictions ("multiple coherent interpretations of reality").
+* A single [lore root](#lore-root) may be related to multiple [theories](#theory) without internal contradictions ("multiple coherent interpretations of reality").
 
 ## Informalization
 
-A process whose input is [formal knowledge](#formal-knowledge) and output is [informal knowledge](#informal-knowledge).
+A process whose input is [theory](#theory) and output is [lore root](#lore-root).
 
 Requirements:
 
-* Given [informal knowledge](#informal-knowledge) `input` and an oracle `o`, applying a chain of formalization and informalization must return `output` for which `o(input, output)` returns true.
-  * In other words: the formalized-informalized knowledge must "match" the original knowledge according to oracle `o`.
+* Given [lore root](#lore-root) `input` and an equivalence relation `eqv`, applying a chain of formalization and informalization must return `output` for which `eqv(input, output)` returns true.
+  * In other words: the formalized-informalized knowledge must "match" the original knowledge according to `eqv`.
 
-Note:
+Notes:
 
 * Informalization is mechanical.
-* Given [informal knowledge](#informal-knowledge) `input`, applying a chain of formalization and informalization may not return the same `input`.
+* Given [lore root](#lore-root) `input`, applying a chain of formalization and informalization may not return the same `input`.
+* The equivalence relation `eqv` is an external program (not defined in this specification).
 
 ## Reference A is more precise than Reference B
 
