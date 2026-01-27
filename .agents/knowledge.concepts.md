@@ -2,7 +2,7 @@
 
 ## Observer
 
-A program that downloads [informal knowledge](#informal-knowledge) from external knowledge sources and writes it into a local directory.
+A program that downloads [informal knowledge](#informal-knowledge) from [source](#informal-knowledge-source) and writes it into a local directory.
 
 Requirements:
 
@@ -18,11 +18,7 @@ Requirements:
 
 ## Informal knowledge
 
-A set of byte arrays that represents the knowledge about an external system.
-
-Examples:
-
-* [Polymarket docs](https://docs.polymarket.com/)
+A directory that represents the knowledge about an external system.
 
 Notes:
 
@@ -34,10 +30,51 @@ Notes:
 * This kind of knowledge is called "informal" because it doesn't have a unique representation in any formal language.
   * Informal knowledge has multiple potential representations in any formal language.
   * Informal knowledge is inherently ambiguous (see: [disambiguation](#disambiguation)).
+* Some informal knowledge files have an internal tree structure
+  * Examples
+    * Every valid source code file has an internal tree structure
+    * Every valid Markdown file has an internal tree structure
+* Some informal knowledge files may have [divergent content and extension](#divergent-file-content-and-file-extension-for-a-specific-validator-map)
+
+## Informal knowledge source
+
+A string that uniquely identifies a subset of informal knowledge.
+
+Examples:
+
+* Polymarket docs: <https://docs.polymarket.com/>
+* Polymarket CTF exchange contract source code: <https://github.com/Polymarket/ctf-exchange>
+* Polymarket CTF exchange contract instance: <https://polygonscan.com/address/0x4bfb41d5b3570defd03c39a9a4d8de6bd8b8982e>
+
+Notes:
+
+* The examples are a map from a source name to a source value.
+
+## Informal knowledge reference
+
+TODO
+
+Requirements:
+
+* Must be a hash of content:
+  * Reasons:
+    * The [observer](#observer) may return different content each time
+      * Some content may be modified by external actors that have write permissions on [source](#informal-knowledge-source)
+      * Some content may be modified as a result of external API calls
+        * Examples:
+          * The list of trades may be extended due to new orders being placed and matched.
 
 ## Formal knowledge
 
 A set of declarations in a specific formal language.
+
+Requirements:
+
+* Every declaration must contain a [reference](#informal-knowledge-reference) to a specific element of the informal knowledge
+
+Preferences:
+
+* Declaration A is better than Declaration B if Declaration A [reference](#informal-knowledge-reference) is more precise than Declaration B [reference](#informal-knowledge-reference) and other properties are equal.
 
 Notes:
 
@@ -58,3 +95,15 @@ A process whose input is [informal knowledge](#informal-knowledge) and output is
 Note:
 
 * A single informal knowledge base may be related to multiple formal knowledge bases without internal contradictions ("multiple coherent interpretations of reality").
+
+## Reference A is more precise than Reference B
+
+Reference A is more precise than Reference B if Reference A is a child of Reference B.
+
+Examples:
+
+* Given a source code file `s`, a reference to a specific method within `s` is more precise than reference to `s` itself.
+
+## Divergent file content and file extension for a specific validator map
+
+File content and file extension are divergent for a specific map from file extensions to file content validators and a path to the file iff the file content doesn't pass the validator implied by the file extension.
