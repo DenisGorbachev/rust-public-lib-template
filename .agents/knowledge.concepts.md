@@ -29,7 +29,7 @@ Notes:
 * Some informal knowledge may contradict the experimental knowledge.
 * This kind of knowledge is called "informal" because it doesn't have a unique representation in any formal language.
   * Informal knowledge has multiple potential representations in any formal language.
-  * Informal knowledge is inherently ambiguous (see: [disambiguation](#disambiguation)).
+  * Informal knowledge is inherently ambiguous (it must be disambiguated during [formalization](#formalization)).
 * Some informal knowledge files have an internal tree structure
   * Examples
     * Every valid source code file has an internal tree structure
@@ -88,13 +88,28 @@ Examples:
 
 * Uniqueness of a value within a dataset.
 
-## Disambiguation
+## Formalization
 
 A process whose input is [informal knowledge](#informal-knowledge) and output is [formal knowledge](#formal-knowledge) that doesn't have internal contradictions.
 
 Note:
 
+* Formalization is not mechanical (requires an "interpreter" entity (not defined in this document)).
 * A single informal knowledge base may be related to multiple formal knowledge bases without internal contradictions ("multiple coherent interpretations of reality").
+
+## Informalization
+
+A process whose input is [formal knowledge](#formal-knowledge) and output is [informal knowledge](#informal-knowledge).
+
+Requirements:
+
+* Given [informal knowledge](#informal-knowledge) `input` and an oracle `o`, applying a chain of formalization and informalization must return `output` for which `o(input, output)` returns true.
+  * In other words: the formalized-informalized knowledge must "match" the original knowledge according to oracle `o`.
+
+Note:
+
+* Informalization is mechanical.
+* Given [informal knowledge](#informal-knowledge) `input`, applying a chain of formalization and informalization may not return the same `input`.
 
 ## Reference A is more precise than Reference B
 
