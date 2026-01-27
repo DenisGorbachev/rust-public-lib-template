@@ -6,14 +6,19 @@ A program that downloads [informal knowledge](#informal-knowledge) from external
 
 Requirements:
 
-* Must accept a `dir` as the last positional parameter
+* Must accept a `dir` as the last positional parameter (the target local directory)
 * Must atomically replace the old directory with a new directory
-* Must write the new directory into a temp path
-  * Must persist the temp path on disk, so that it would be possible for the user to debug a potential error in the command
+  * Create the temp directory in the same parent directory as `dir` (suffix: ".new") (same filesystem required for atomic rename)
+  * Build the new contents fully inside the temp directory
+  * Fsync files and the temp directory (best-effort where supported)
+  * If `dir` exists, rename it to a backup name in the same parent directory (suffix: ".old")
+  * Rename the temp directory to `dir` (atomic on POSIX and Windows when same filesystem)
+  * If the final rename fails, attempt to restore the backup and keep the temp directory for debugging
+  * After a successful replace, remove the backup directory
 
 ## Informal knowledge
 
-A set of bytelists that represents the knowledge about an external system.
+A set of byte arrays that represents the knowledge about an external system.
 
 Examples:
 
