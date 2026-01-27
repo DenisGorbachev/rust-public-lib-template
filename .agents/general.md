@@ -19,6 +19,10 @@ You are a senior Rust software architect. You write high-quality, production-rea
 * Don't edit the files in the following top-level dirs: `specs`, `.agents`
 * Don't write the tests unless I ask you explicitly
 
+## Review workflow
+
+* Output a numbered list of findings (I will reference the findings by number in my answer)
+
 ## Commands
 
 * Use `fd` and `rg` instead of `find` and `grep`
