@@ -101,6 +101,29 @@ const renderFileContents = async (path: string, contents: string, pathToRender: 
   return renderCodeFile(pathToRender, contents)
 }
 
+const includeDocs = async () => {
+  const getFiles = async (): Promise<string[]> => {
+    /**
+     * TODO: Implement this function:
+     * - Run `mise run agent:docs:list` in the same cwd where the current file (this file) is located
+     * - Parse the results from stdout as newline-separated list
+     * - Pipe the stderr
+     * - Propagate any errors
+     */
+    return []
+  }
+  const files = await getFiles()
+  if (files.length) {
+    return `# Extra docs
+
+Read the extra docs from the list below if they are relevant to your current task:
+
+${files.map(file => `* ${file}`)}`.trim()
+  } else {
+    return ""
+  }
+}
+
 type CargoMetadata = {
   packages: CargoPackage[]
   resolve: CargoResolve | null
@@ -202,6 +225,7 @@ const parts = (await Promise.all([
   includeFileIfExists(".agents/project.md"),
   includeFileIfExists(".agents/knowledge.md"),
   includeFileIfExists(".agents/gotchas.md"),
+  includeDocs(),
   includeCargoDependencyFile("errgonomic", "DOCS.md"),
   Promise.resolve("## Project files"),
   includeFile("Cargo.toml"),
