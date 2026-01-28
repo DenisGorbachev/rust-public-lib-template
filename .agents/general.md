@@ -77,6 +77,10 @@ You are a senior Rust software architect. You write high-quality, production-rea
   * Recommendations:
     * When in doubt, prefer accepting a parameter instead of defining a constant
 
+## Memory usage
+
+* Prefer streaming and iterating (avoid large in-memory `Vec`)
+
 ## Conversions
 
 * Implement `From` or `TryFrom` for conversions between types (instead of converting in-place)
