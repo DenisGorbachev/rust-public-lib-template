@@ -20,6 +20,10 @@ Examples:
 * A definition of a Rust package.
 * A definition of a Rust function.
 
+Requirements:
+
+* Synonyms must contain only exact semantic synonyms, not just similar words.
+
 Preferences:
 
 * Should be specific.
