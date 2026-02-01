@@ -58,5 +58,5 @@ fi
   mise run test
 
   git add .
-  git commit -a -m "chore: update package details"
+  git commit -C "$dir" -a -m "chore: update package details"
 )
