@@ -25,6 +25,6 @@ export default {
       ],
     ],
     'subject-case': [disable],
-    'body-max-line-length': [disable]
+    'body-max-line-length': [disable /* because Dependabot produces commits with long bodies */]
   },
 }
