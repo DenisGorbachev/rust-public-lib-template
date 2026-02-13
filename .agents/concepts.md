@@ -7,11 +7,11 @@ A structure with the following fields:
 * [Name](#name)
 * [Definition](#definition)
 * [Aliases](#aliases)
-* [Constructors](#constructors)
 * [Examples](#examples)
 * [Requirements](#requirements)
 * [Preferences](#preferences)
-* [Propositions](#propositions)
+* [Constructors](#constructors)
+* [Properties](#properties)
 * [Notes](#notes)
 * [Custom sections](#custom-sections)
 
@@ -19,10 +19,6 @@ Examples:
 
 * A definition of a Rust package.
 * A definition of a Rust function.
-
-Requirements:
-
-* Synonyms must contain only exact semantic synonyms, not just similar words.
 
 Preferences:
 
@@ -80,9 +76,9 @@ An optional [listmap](#listmap) of [requirements](#requirement).
 
 An optional [listmap](#listmap) of [preferences](#preference).
 
-## Propositions
+## Properties
 
-An optional [listmap](#listmap) of [propositions](#proposition).
+An optional [listmap](#listmap) of [properties](#property).
 
 ## Notes
 
@@ -96,20 +92,23 @@ An optional [listmap](#listmap) of [listmaps](#listmap) of [notes](#note).
 
 A string that represents a constructor of a type.
 
+* Constructor corresponds to a constructor in a [dependently-typed language](#dependently-typed-language).
+
 ## Example
 
 A [stringtree](#stringtree) that [represents](#representation) an instance of a parent object.
+
+Notes:
+
+* Example corresponds to a specific instance of a type in a [dependently-typed language](#dependently-typed-language).
 
 ## Requirement
 
 A [stringtree](#stringtree) that [represents](#representation) a boolean test of an instance of a parent object.
 
-Allowances:
-
-* May be a method
-
 Notes:
 
+* Requirement corresponds to a predicate in a [dependently-typed language](#dependently-typed-language).
 * If an input doesn't pass the requirement test, then it is not an instance of a parent object.
 
 ## Preference
@@ -121,9 +120,13 @@ Notes:
 * Preferences must be sorted by importance (most important first).
 * Preferences should be used to make a choice between two inputs that pass the [requirements](#requirement).
 
-## Proposition
+## Property
 
-A [stringtree](#stringtree) that [represents](#representation) a proposition about an instance of a parent object.
+A [stringtree](#stringtree) that [represents](#representation) a property of an instance of a parent object.
+
+Notes:
+
+* Property corresponds to a theorem in a [dependently-typed language](#dependently-typed-language).
 
 ## Method specification
 
@@ -132,7 +135,7 @@ A structure with the following fields:
 * [Name](#name)
 * Requirements (optional [listmap](#listmap) of [requirements](#requirement))
 * Preferences (optional [listmap](#listmap) of [preferences](#preference))
-* Propositions (optional [listmap](#listmap) of [propositions](#proposition))
+* Properties (optional [listmap](#listmap) of [properties](#property))
 * Notes (optional [listmap](#listmap) of [notes](#note))
 
 * Must have methods:
@@ -221,7 +224,7 @@ Notes:
 
 A function from two strings to a boolean.
 
-Synonyms: is-test.
+Aliases: is-test.
 
 Examples:
 
@@ -245,3 +248,15 @@ An entity whose goal is to prevent its own termination.
 Notes:
 
 * An agent can be artificial or natural (LLM or human).
+
+## Dependently-typed language
+
+A programming language that supports dependent types.
+
+Aliases: DTL.
+
+Examples:
+
+* Lean
+* Agda
+* Gallina (Rocq prover)
