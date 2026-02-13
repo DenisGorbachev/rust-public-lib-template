@@ -12,7 +12,6 @@ A structure with the following fields:
 * [Requirements](#requirements)
 * [Preferences](#preferences)
 * [Propositions](#propositions)
-* [Methods](#methods)
 * [Notes](#notes)
 * [Custom sections](#custom-sections)
 
@@ -85,10 +84,6 @@ An optional [listmap](#listmap) of [preferences](#preference).
 
 An optional [listmap](#listmap) of [propositions](#proposition).
 
-## Methods
-
-An optional map from method names to [method specifications](#method-specification).
-
 ## Notes
 
 An optional [listmap](#listmap) of [notes](#note).
@@ -108,6 +103,10 @@ A [stringtree](#stringtree) that [represents](#representation) an instance of a 
 ## Requirement
 
 A [stringtree](#stringtree) that [represents](#representation) a boolean test of an instance of a parent object.
+
+Allowances:
+
+* May be a method
 
 Notes:
 
@@ -130,16 +129,16 @@ A [stringtree](#stringtree) that [represents](#representation) a proposition abo
 
 A structure with the following fields:
 
+* [Name](#name)
 * Requirements (optional [listmap](#listmap) of [requirements](#requirement))
 * Preferences (optional [listmap](#listmap) of [preferences](#preference))
 * Propositions (optional [listmap](#listmap) of [propositions](#proposition))
 * Notes (optional [listmap](#listmap) of [notes](#note))
 
-Methods:
-
-* Render as Markdown:
-  * Requirements:
-    * Must output a list where the top-level items correspond to the structure fields.
+* Must have methods:
+  * `to_markdown`:
+    * Requirements:
+      * Must output a list where the top-level items correspond to the structure fields.
 
 ## Note
 
@@ -156,7 +155,7 @@ A Markdown document that renders a list of [concepts](#concept) with the followi
   * Other fields:
     * Paragraph that is exactly equal to the field name with ":" in the end.
     * Field value:
-      * If the field type has a "Render as Markdown" method, then call it, otherwise render the most direct representation (e.g. render strings directly).
+      * If the field type has a `to_markdown` method, then call it, otherwise render the most direct representation (e.g. render strings directly).
 
 Requirements:
 
@@ -166,7 +165,11 @@ Requirements:
 
 ## Name
 
-A string that is unique within a document.
+An arbitrary string.
+
+Preferences:
+
+* Should uniquely identify the item that it belongs to.
 
 ## Listmap
 
@@ -175,12 +178,13 @@ A listmap of type A is one of:
 * A list of values of type A.
 * A map from [names](#name) to values of type A.
 
-Methods:
+Requirements:
 
-* Render as Markdown:
-  * Requirements:
-    * If the value is a list: must output a Markdown list.
-    * If the value is a map: must output a Markdown list where each item is rendered as `{key}: {value}`.
+* Must have methods:
+  * `to_markdown`:
+    * Requirements:
+      * If the value is a list: must output a Markdown list.
+      * If the value is a map: must output a Markdown list where each item is rendered as `{key}: {value}`.
 
 Notes:
 
@@ -193,13 +197,12 @@ A stringtree is a structure with the following fields:
 * Text (string)
 * Children (a list of stringtrees)
 
-Methods:
-
-* Render as Markdown:
-  * Requirements:
-    * Must output a multi-level Markdown list.
-      * The "Text" field must be rendered as the top-level list item.
-      * The "Children" field must be rendered as child list items.
+* Must have methods:
+  * `to_markdown`:
+    * Requirements:
+      * Must output a multi-level Markdown list.
+        * The "Text" field must be rendered as the top-level list item.
+        * The "Children" field must be rendered as child list items.
 
 Notes:
 
