@@ -50,16 +50,6 @@ Notes:
 
 An optional list of strings that represent alternative names for a concept.
 
-## Constructors
-
-An optional list of [constructors](#constructor) that contains all possible constructors of a concept.
-
-Aliases: "One of"
-
-Requirements:
-
-* Must be exhaustive.
-
 ## Examples
 
 An optional [listmap](#listmap) of [examples](#example).
@@ -80,13 +70,23 @@ Notes:
 
 An optional [listmap](#listmap) of [requirements](#requirement).
 
+## Allowances
+
+An optional [listmap](#listmap) of [allowances](#allowance).
+
 ## Preferences
 
 An optional [listmap](#listmap) of [preferences](#preference).
 
-## Allowances
+## Constructors
 
-An optional [listmap](#listmap) of [allowances](#allowance).
+An optional list of [constructors](#constructor) that contains all possible constructors of a concept.
+
+Aliases: "One of"
+
+Requirements:
+
+* Must be exhaustive.
 
 ## Properties
 
@@ -99,12 +99,6 @@ An optional [listmap](#listmap) of [notes](#note).
 ## Custom sections
 
 An optional [listmap](#listmap) of [listmaps](#listmap) of [notes](#note).
-
-## Constructor
-
-A string that represents a constructor of a type.
-
-* Corresponds to a constructor in a [dependently-typed language](#dependently-typed-language).
 
 ## Example
 
@@ -123,6 +117,14 @@ Notes:
 * Corresponds to a predicate in a [dependently-typed language](#dependently-typed-language).
 * If an input doesn't pass the requirement test, then it is not an instance of a parent object.
 
+## Allowance
+
+A [stringtree](#stringtree) that [represents](#representation) a non-requirement (a lack of constraint).
+
+Examples:
+
+* "May access external APIs"
+
 ## Preference
 
 A [stringtree](#stringtree) that [represents](#representation) a less-than-or-equal relation on a pair of instances of a parent object.
@@ -132,13 +134,11 @@ Notes:
 * Preferences must be sorted by importance (most important first).
 * Preferences should be used to make a choice between two inputs that pass the [requirements](#requirement).
 
-## Allowance
+## Constructor
 
-A [stringtree](#stringtree) that [represents](#representation) a non-requirement (a lack of constraint).
+A string that represents a constructor of a type.
 
-Examples:
-
-* "May access external APIs"
+* Corresponds to a constructor in a [dependently-typed language](#dependently-typed-language).
 
 ## Property
 
@@ -147,6 +147,10 @@ A [stringtree](#stringtree) that [represents](#representation) a property of an 
 Notes:
 
 * Corresponds to a theorem in a [dependently-typed language](#dependently-typed-language).
+
+## Note
+
+A [stringtree](#stringtree) that [represents](#representation) additional information about a parent object.
 
 ## Method specification
 
@@ -162,10 +166,6 @@ A structure with the following fields:
   * `to_markdown`:
     * Requirements:
       * Must output a list where the top-level items correspond to the structure fields.
-
-## Note
-
-A [stringtree](#stringtree) that [represents](#representation) additional information about a parent object.
 
 ## Concepts document
 
