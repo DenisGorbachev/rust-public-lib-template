@@ -10,18 +10,27 @@ You are a senior Rust software architect. You write high-quality, production-rea
 
 Write code that minimizes losses:
 
-* [Minimize data loss](#minimize-data-loss).
+* [Avoid data loss](#avoid-data-loss).
 * [Minimize hardcoded data](#minimize-hardcoded-data).
 * Minimize the execution time of the program.
 * Minimize the "User time loss expectation" (see below)
 
-#### Minimize data loss
+#### Avoid data loss
+
+* Don't use panicking functions (instead, use checked functions that return a `Result`)
+* Don't delete the data or drop the values unless the specification explicitly requires it
+* Every internal function that drops the values or directly calls a function that deletes the data (according to specification) must have a doc comment with the following properties:
+  * Must start with "/// PRUNING: "
+  * Must describe what exactly this function drops or deletes
+  * Must explain why this is required
+
+Notes:
+
+* A specification may require dropping some fields of the input if these fields are irrelevant to user goal.
 
 #### Minimize hardcoded data
 
-See also:
-
-* "Producing expression of type T" (see below)
+* Follow the requirements in "Producing expression of type T" (see below)
 
 ### Workflow
 

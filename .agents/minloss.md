@@ -191,9 +191,9 @@ Preferences:
 
 * Should be produced by `figment` crate
 
-## External-facing fn
+## Frontend-facing fn
 
-A Rust fn that calls an [external API](#external-api).
+A Rust fn that calls a [frontend API](#frontend-api).
 
 Preferences:
 
@@ -204,24 +204,32 @@ Preferences:
     * `FileShowCommand::run` (the user does not type any destructive words when invoking this command)
 * If it is irreversible: should be [atomic](#atomic-fn).
 
-## External API
+## Internal fn
 
-An API that the program uses to read the input or write the output.
+A Rust fn defined in the current crate.
+
+## External fn
+
+A Rust fn imported from an external crate.
+
+## Frontend API
+
+An API that the program calls to read the user input or write the user output.
 
 Examples:
 
 * Terminal emulator API
 * Shell API
 * Browser API
-* Filesystem API (can be either external or internal)
+* Filesystem API (can be a frontend API if it is used to read or write user-provided files)
 
-## Internal API
+## Backend API
 
-An API that the program uses to read or write the parts of the state which are not an explicit input or output.
+An API that the program calls to read or write the parts of the state which are not an explicit input or output.
 
 Examples:
 
-* Filesystem API (can be either external or internal)
+* Filesystem API (can be a backend API if it is used to read or write internal state)
 * Database API
 
 ## Reversible fn
