@@ -85,23 +85,18 @@ Examples:
 
 A string that can be interpreted as a struct with the following fields:
 
-* `sources` (a list of source APIs)
-* `target` (a single target API)
+* `frontends` (a list of [frontend APIs](#frontend-api))
+* `backends` (a list of [backend APIs](#backend-api))
 * `audience` (a string that describes a list of [users](#user))
 
 Examples:
 
 * "A Fjall database CLI for developers"
-  * `sources` includes the Fjall API and the filesystem API
-  * `target` includes the executable API (stdin, stdout, stderr) and the shell API (e.g. escape codes)
+  * `frontends` includes the stdio API (stdin, stdout, stderr) and the shell API (e.g. escape codes)
+  * `backends` includes the Fjall API and the filesystem API
   * `audience` includes the developers
 
-Notes:
-
-* The "source API", "target API", "description" are not defined yet.
-* The example for "Types that provide compile-time safety for arithmetic operations and conversions between units-of-measurement" doesn't match the proposed formalization
-
-## Implementation
+## Rust fn
 
 Preferences:
 
