@@ -1688,19 +1688,6 @@ standard-traits = { git = "https://github.com/DenisGorbachev/standard-traits" }
 strum = { version = "0.27.2", features = ["derive"] }
 stub-macro = { version = "0.2.1" }
 subtype = { git = "https://github.com/DenisGorbachev/subtype" }
-
-[package.metadata.cargo-machete]
-ignored = [
-    "derive-getters",
-    "derive-new",
-    "derive_more",
-    "errgonomic",
-    "itertools",
-    "standard-traits",
-    "strum",
-    "stub-macro",
-    "subtype",
-]
 ```
 
 ### src/lib.rs
