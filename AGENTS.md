@@ -442,6 +442,7 @@ Every fallible function must return an error with enough data for the caller to 
     * `len` can't be rendered as hard-to-see string, so it must not be wrapped in single quotes:
       * Good: `#[error("failed to parse {len} responses", len = responses.len())]`
       * Bad: `#[error("failed to parse '{len}' responses", len = responses.len())]`
+  * If the error enum variant has a field whose type is `std::process::Command` or `tokio::process::Command`, it must be rendered in the error message via `render_command` function from `errgonomic` crate (requires `shlex` feature).
 * If the error enum variant has a `source` field, then this field must be the first field
 * If each field of each variant of the error enum implements `Copy`, then the error enum must implement `Copy` too
 * Every error enum variant field must have an owned type (not a reference)
@@ -637,6 +638,23 @@ pub fn partition_result<T, E>(results: impl IntoIterator<Item = Result<T, E>>) -
     });
 
     if errors.is_empty() { Ok(oks) } else { Err(errors) }
+}
+```
+
+### File: src/functions/render\_command.rs
+
+```rust
+use std::process::Command;
+
+pub fn render_command(command: &Command) -> String {
+    let parts = core::iter::once(command.get_program().to_string_lossy())
+        .chain(command.get_args().map(|arg| arg.to_string_lossy()))
+        .collect::<Vec<_>>();
+    let result = shlex::try_join(parts.iter().map(|x| x.as_ref()));
+    match result {
+        Ok(string) => string,
+        Err(_) => command.get_program().to_string_lossy().into_owned(),
+    }
 }
 ```
 
@@ -1095,6 +1113,13 @@ cfg_if::cfg_if! {
         pub use exit_result::*;
     }
 }
+
+cfg_if::cfg_if! {
+    if #[cfg(all(feature = "std", feature = "shlex"))] {
+        mod render_command;
+        pub use render_command::*;
+    }
+}
 ```
 
 ### File: src/lib.rs
@@ -1200,7 +1225,7 @@ mod functions;
 
 pub use functions::*;
 
-#[cfg(test)]
+#[cfg(all(test, feature = "std"))]
 mod drafts;
 ````
 
