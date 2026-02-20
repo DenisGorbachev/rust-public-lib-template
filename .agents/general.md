@@ -85,6 +85,13 @@ Notes:
 * Use `cargo add` to add dependencies at their latest versions
 * Set the timeout to 300000 ms for the following commands: `mise run agent:on:stop`, `cargo build`, `git commit`
 
+## Recommended crates
+
+* `errgonomic` for error handling
+* `strum` for enum derives
+* `subtype` for defining newtypes
+* `tempfile` for creating temp dirs or files
+
 ## Files
 
 * The file name must match the name of the primary item in this file (for example: a file with `struct User` must be named `user.rs`)
@@ -350,7 +357,6 @@ A function marked with `#[test]` or `#[tokio::test]`.
 
 * Must return a `Result`
 * Must implement proper error handling using macros from `errgonomic` crate
-* If it creates temporary files or dirs: must use `tempfile` crate
 
 ## Macros
 
