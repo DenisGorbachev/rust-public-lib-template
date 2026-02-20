@@ -350,6 +350,7 @@ A function marked with `#[test]` or `#[tokio::test]`.
 
 * Must return a `Result`
 * Must implement proper error handling using macros from `errgonomic` crate
+* If it creates temporary files or dirs: must use `tempfile` crate
 
 ## Macros
 
