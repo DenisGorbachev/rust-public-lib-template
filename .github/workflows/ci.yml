@@ -6,7 +6,6 @@ env:
     -Dwarnings
     -Clink-arg=-fuse-ld=mold
   RUST_BACKTRACE: 1
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   test:
