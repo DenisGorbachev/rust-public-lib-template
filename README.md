@@ -1,6 +1,6 @@
 # Rust public lib template
 
-[![Build](https://github.com/DenisGorbachev/rust-public-lib-template/actions/workflows/ci.yml/badge.svg)](https://github.com/DenisGorbachev/rust-private-lib-template)
+[![Build](https://github.com/DenisGorbachev/rust-public-lib-template/actions/workflows/ci.yml/badge.svg)](https://github.com/DenisGorbachev/rust-public-lib-template)
 
 ## Gratitude
 
