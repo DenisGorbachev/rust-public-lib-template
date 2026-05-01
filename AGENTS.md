@@ -1775,13 +1775,13 @@ cfg_if::cfg_if! {
 
 ```toml
 [package]
-name = "rust-private-lib-template"
+name = "rust-pre-public-lib-template"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.85.0"
-description = "A template for creating Rust private repositories."
-homepage = "https://github.com/DenisGorbachev/rust-private-template"
-repository = "https://github.com/DenisGorbachev/rust-private-template"
+description = "A template for creating Rust pre-public libs."
+homepage = "https://github.com/DenisGorbachev/rust-pre-public-lib-template"
+repository = "https://github.com/DenisGorbachev/rust-pre-public-lib-template"
 readme = "README.md"
 keywords = []
 categories = []
@@ -1803,7 +1803,7 @@ exclude = [
 ]
 
 [package.metadata.details]
-title = "Rust private template"
+title = "Rust pre-public lib template"
 tagline = ""
 summary = ""
 announcement = ""
