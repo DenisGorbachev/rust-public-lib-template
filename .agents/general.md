@@ -161,9 +161,7 @@ The general layout guidelines may be overridden by more specific layout guidelin
 
 ## Constants
 
-* If a constant value is used in multiple places:
-  * Then: define a constant
-  * Else: inline the value without defining a constant
+* Define constants only for values used in multiple places (prefer inline values)
 
 ## Types
 
