@@ -159,6 +159,12 @@ Notes:
 
 The general layout guidelines may be overridden by more specific layout guidelines below.
 
+## Constants
+
+* If a constant value is used in multiple places:
+  * Then: define a constant
+  * Else: inline the value without defining a constant
+
 ## Types
 
 * Always use the most specific types (enforce semantic difference through syntactic difference):
