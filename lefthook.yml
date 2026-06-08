@@ -11,7 +11,7 @@ pre-commit:
       run: mise run test
 post-commit:
   commands:
-    repair-index-from-worktree:
+    repair-index:
       run: |
         set -eu
         unset GIT_INDEX_FILE
