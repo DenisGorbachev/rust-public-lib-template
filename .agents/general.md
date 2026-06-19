@@ -161,7 +161,9 @@ Notes:
 
 ## Layout
 
-* Generic helper functions must be in `src/functions` folder
+* Generic helper functions must be in `src/functions` (one file per function)
+* Error type aliases must be in `src/aliases.rs`
+  * Error type aliases must be `pub(crate)`
 
 The general layout guidelines may be overridden by more specific layout guidelines below.
 
