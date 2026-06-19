@@ -503,7 +503,8 @@ readme = { generate = false }
 [lints.rust]
 redundant_imports = "deny"
 unused_import_braces = "deny"
-unused_qualifications = "deny"
+# unused_qualifications must not be "deny" because our code style has multiple `use Foo::*;`, and some macros (derive_more::Display, strum::Display, strum::EnumString) produce code with full qualifications
+# unused_qualifications = "deny"
 
 [lints.clippy]
 absolute_paths = "deny"
