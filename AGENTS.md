@@ -1845,6 +1845,14 @@ summary = ""
 announcement = ""
 readme = { generate = false }
 
+[lints.rust]
+redundant_imports = "deny"
+unused_import_braces = "deny"
+unused_qualifications = "deny"
+
+[lints.clippy]
+absolute_paths = "deny"
+
 [dependencies]
 derive-getters = { version = "0.5.0", features = ["auto_copy_getters"] }
 derive-new = "0.7.0"
