@@ -161,7 +161,12 @@ Notes:
 
 ### Visibility
 
-* Prefer `pub` instead of `pub(crate)` or private.
+* Items:
+  * Prefer `pub` instead of `pub(crate)` or private.
+* Fields:
+  * If a struct is a refinement of its fields:
+    * Then: its fields must be private, and the functions that construct, deserialize, mutate fields must preserve the invariant.
+    * Else: its fields must be `pub`.
 
 ### Constants
 
