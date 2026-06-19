@@ -191,11 +191,6 @@ Notes:
   * Error types that implement `Error` must be in the same files as the functions that return them
 * Prefer attaching the types as child modules to src/types.rs
 
-### Type aliases
-
-* Type aliases for foreign crate error and result types must be in `src/aliases.rs`
-* Type aliases for foreign crate error and result types must be `pub(crate)`
-
 ### Functions
 
 * Implement proper error handling using macros from `errgonomic` crate instead of `unwrap` or `expect` (in normal code and in tests)
