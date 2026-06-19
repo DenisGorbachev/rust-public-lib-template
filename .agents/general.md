@@ -154,6 +154,9 @@ Notes:
         Sell,
     }
     ```
+* If you need error and result types from `std`, prefer short paths:
+  * `use std::io;` and `io::Result`, `io::Error`
+  * `use std::fmt;` and `fmt::Result`, `fmt::Error`
 
 ## Visibility
 
