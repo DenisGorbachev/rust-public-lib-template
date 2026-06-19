@@ -95,6 +95,10 @@ Notes:
   * "-" - "Don't apply any fixes"
   * other - respond normally (keep the number in your response)
 
+### Debugging workflow
+
+* Improve error handling, so that the root cause is clearly visible
+
 ### Commands
 
 * Use `fd` and `rg` instead of `find` and `grep`
