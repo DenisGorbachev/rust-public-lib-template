@@ -159,17 +159,9 @@ Notes:
     }
     ```
 
-### Items
+### Visibility
 
 * Prefer `pub` instead of `pub(crate)` or private.
-
-### Layout
-
-* Generic helper functions must be in `src/functions` (one file per function)
-* Error type aliases must be in `src/aliases.rs`
-  * Error type aliases must be `pub(crate)`
-
-The general layout guidelines may be overridden by more specific layout guidelines below.
 
 ### Constants
 
@@ -190,6 +182,11 @@ The general layout guidelines may be overridden by more specific layout guidelin
 * Every `struct`, `enum`, `union` must be in a separate file (except for error types that implement `Error`)
   * Error types that implement `Error` must be in the same files as the functions that return them
 * Prefer attaching the types as child modules to src/types.rs
+
+### Type aliases
+
+* Type aliases for foreign crate error and result types must be in `src/aliases.rs`
+* Type aliases for foreign crate error and result types must be `pub(crate)`
 
 ### Functions
 
@@ -382,6 +379,7 @@ The general layout guidelines may be overridden by more specific layout guidelin
       }
   }
   ```
+* Generic helper functions must be in `src/functions` (one file per function)
 
 ### Struct derives
 
