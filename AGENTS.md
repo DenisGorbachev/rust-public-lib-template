@@ -1888,15 +1888,15 @@ cfg_if::cfg_if! {
 ### Cargo.toml
 
 ```toml
-[package]
-name = "rust-pre-public-lib-template"
+[workspace]
+resolver = "3"
+
+[workspace.package]
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.93.1"
-description = "A template for creating Rust pre-public libs."
 homepage = "https://github.com/DenisGorbachev/rust-pre-public-lib-template"
 repository = "https://github.com/DenisGorbachev/rust-pre-public-lib-template"
-readme = "README.md"
 keywords = []
 categories = []
 exclude = [
@@ -1912,28 +1912,49 @@ exclude = [
     "deno.json",
     "commitlint.config.mjs",
     "fnox.toml",
-    "lefthook.yml",
     "mise.toml",
     "rumdl.toml",
     "rustfmt.toml",
     ".yolobox"
 ]
 
-[package.metadata.details]
+[workspace.metadata.details]
+name = "rust-pre-public-lib-template"
 title = "Rust pre-public lib template"
 tagline = ""
 summary = ""
 announcement = ""
 readme = { generate = false }
 
-[lints.rust]
+[workspace.lints.rust]
 redundant_imports = "deny"
 unused_import_braces = "deny"
 # unused_qualifications must not be "deny" because our code style has multiple `use Foo::*;`, and some macros (derive_more::Display, strum::Display, strum::EnumString) produce code with full qualifications
 # unused_qualifications = "deny"
 
-[lints.clippy]
+[workspace.lints.clippy]
 absolute_paths = "deny"
+
+[package]
+name = "rust-pre-public-lib-template"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "A template for creating Rust pre-public libs."
+homepage.workspace = true
+repository.workspace = true
+keywords.workspace = true
+categories.workspace = true
+exclude.workspace = true
+
+[package.metadata.details]
+title = "Rust pre-public lib template"
+tagline = ""
+summary = ""
+announcement = ""
+
+[lints]
+workspace = true
 
 [dependencies]
 derive-getters = { version = "0.5.0", features = ["auto_copy_getters"] }
