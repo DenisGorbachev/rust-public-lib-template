@@ -89,6 +89,7 @@
 
 - Must install executable `pre-commit`, `post-commit`, and `commit-msg` hooks in Git's resolved hooks directory.
 - Hooks must delegate to matching mise tasks and forward all arguments.
+- Must support the BSD command-line tools provided by macOS.
 - Installation must replace obsolete Lefthook launchers.
 
 ## .mise/tasks/git/stage-fixed.sh

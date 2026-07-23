@@ -14,7 +14,7 @@ write_hook() {
     echo '#!/bin/sh'
     echo "$command"
   } >"$hook_path"
-  chmod 0755 -- "$hook_path"
+  chmod 0755 "$hook_path"
 }
 
 # These repository-owned hooks intentionally replace the previous Lefthook launchers.
