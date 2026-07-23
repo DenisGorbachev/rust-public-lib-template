@@ -26,7 +26,7 @@ fnox_toml="$dir/fnox.toml"
   fi
 
   # Use `-f` because BSD `rm` does not support GNU `--force`.
-  rm -f -- LICENSE-APACHE LICENSE-MIT
+  rm -f LICENSE-APACHE LICENSE-MIT
 
   mise run fix:name "$repo_name"
   cargo metadata --manifest-path "$cargo_toml" --format-version 1 --no-deps |

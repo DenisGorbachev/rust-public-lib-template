@@ -8,11 +8,16 @@ import { assert, assertEquals } from "jsr:@std/assert@1.0.0"
 import { dirname, join, relative } from "jsr:@std/path@1.1.4"
 import { parse as parseToml } from "jsr:@std/toml@1.0.5"
 
+const ReadmeSchema = z.object({
+  generate: z.boolean().optional(),
+}).default({})
+
 const PackageDetailsSchema = z.object({
   title: z.string().nullable().optional(),
   tagline: z.string().optional(),
   summary: z.string().optional(),
   announcement: z.string().optional(),
+  readme: ReadmeSchema,
   peers: z.array(z.string()).default([]).describe("Packages that should be installed alongside this package"),
 }).default({})
 
@@ -44,6 +49,7 @@ const WorkspaceManifestSchema = z.object({
       details: z.object({
         name: z.string().min(1).optional(),
         title: z.string().nullable().optional(),
+        readme: ReadmeSchema,
       }).default({}),
     }).default({}),
   }).optional(),
@@ -154,13 +160,13 @@ const repository = workspaceManifest.workspace?.package?.repository ?? rootPacka
 if (repository) assertEquals(originUrl, repository)
 for (const { repository: packageRepository } of workspacePackages) if (packageRepository) assertEquals(packageRepository, originUrl)
 
-const isPublicGitHubRepoPromise = (async () => {
+const checkIsPublicGitHubRepo = async () => {
   if (!URL.canParse(originUrl) || new URL(originUrl).hostname !== "github.com") return false
   const response = await fetch(originUrl, { method: "GET" })
   if (response.status === 200) return true
   if (response.status === 404) return false
   throw new Error(`Unexpected response status while checking GitHub repo visibility: ${response.status} ${response.statusText}`)
-})()
+}
 
 const licenseNameFileMap: Record<string, string> = {
   "Apache-2.0": "LICENSE-APACHE",
@@ -320,9 +326,11 @@ const replaceReadme = async ({ destinationPath, temporaryPath }: RenderedReadme)
 }
 
 try {
-  const isPublicGitHubRepo = await isPublicGitHubRepoPromise
-  const renderPromises: Promise<RenderedReadme>[] = workspacePackages.map((cargoPackage) => renderPackageReadme(cargoPackage, isPublicGitHubRepo))
-  if (!rootPackage) renderPromises.push(renderVirtualWorkspaceReadme())
+  const generateWorkspaceReadme = workspaceManifest.workspace?.metadata?.details?.readme?.generate ?? true
+  const packagesToRender = workspacePackages.filter(({ metadata }) => metadata.details.readme.generate ?? generateWorkspaceReadme)
+  const isPublicGitHubRepo = packagesToRender.length > 0 ? await checkIsPublicGitHubRepo() : false
+  const renderPromises = packagesToRender.map((cargoPackage) => renderPackageReadme(cargoPackage, isPublicGitHubRepo))
+  if (!rootPackage && generateWorkspaceReadme) renderPromises.push(renderVirtualWorkspaceReadme())
 
   const results = await Promise.allSettled(renderPromises)
   const failures = results.flatMap((result) => result.status === "rejected" ? [result.reason] : [])

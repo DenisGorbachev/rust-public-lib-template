@@ -23,7 +23,7 @@ rollback_transaction() {
   if [[ ! -e $backup_root/committed ]]; then
     while IFS= read -r -d '' source && IFS= read -r -d '' destination; do
       if [[ -e $source && ! -e $destination ]]; then
-        mv -- "$source" "$destination"
+        mv "$source" "$destination"
       fi
     done <"$backup_root/directory-rollbacks"
     # PRUNING: Restore the archived originals, dropping only changes made by this failed rename transaction.
@@ -31,7 +31,7 @@ rollback_transaction() {
   fi
   # PRUNING: Delete only temporary transaction backups after success or rollback because the originals have been committed or restored.
   # Use `-rf` because BSD `rm` does not support GNU long options.
-  rm -rf -- "$backup_root"
+  rm -rf "$backup_root"
   exit "$status"
 }
 
@@ -101,7 +101,7 @@ apply_rename() (
     rollbacks_file_new="$directory_rollbacks_file.new"
     jq --null-input --join-output --raw-output --arg source "$destination" --arg destination "$package_dir" '$source + "\u0000" + $destination + "\u0000"' >"$rollbacks_file_new"
     cat "$directory_rollbacks_file" >>"$rollbacks_file_new"
-    mv -- "$rollbacks_file_new" "$directory_rollbacks_file"
+    mv "$rollbacks_file_new" "$directory_rollbacks_file"
     package_dirs+=("$package_dir")
     package_dir_destinations+=("$destination")
   done <"$manifest_paths_file"
@@ -122,7 +122,7 @@ apply_rename() (
 
   local index
   for index in "${!package_dirs[@]}"; do
-    mv -- "${package_dirs[$index]}" "${package_dir_destinations[$index]}"
+    mv "${package_dirs[$index]}" "${package_dir_destinations[$index]}"
   done
 
   local validation_flag=--no-deps

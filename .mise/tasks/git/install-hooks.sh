@@ -4,7 +4,7 @@ set -euo pipefail
 
 hooks_dir=$(git rev-parse --path-format=absolute --git-path hooks)
 # Use `-p` because BSD `mkdir` does not support GNU `--parents`.
-mkdir -p -- "$hooks_dir"
+mkdir -p "$hooks_dir"
 
 write_hook() {
   local hook_path=${1:?}

@@ -34,6 +34,7 @@ title = "Rust private template"
 tagline = ""
 summary = ""
 announcement = ""
+readme = { generate = false }
 
 [workspace.lints.rust]
 redundant_imports = "deny"

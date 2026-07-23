@@ -1,5 +1,7 @@
 # Project support
 
+- Shell scripts must support GNU/Linux and the Bash and BSD command-line tools bundled with macOS 15.
+
 ## Cargo.toml
 
 - Must contain:
@@ -33,7 +35,8 @@
 - Must use `cargo metadata` to discover workspace packages, manifests, targets, and resolved properties.
 - Must normalize GitHub origin URLs and validate every non-empty package repository against the origin.
 - For the root repository check, must prefer `workspace.package.repository` and fall back to the resolved root `package.repository`.
-- Must generate:
+- Must enable each README when `package.metadata.details.readme.generate ?? workspace.metadata.details.readme.generate ?? true` is `true`.
+- When enabled, must generate:
   - One README beside every workspace package manifest.
   - An `Other packages` section in the root package README.
   - A heading and package README links at the repository root for a virtual workspace.
@@ -89,7 +92,6 @@
 
 - Must install executable `pre-commit`, `post-commit`, and `commit-msg` hooks in Git's resolved hooks directory.
 - Hooks must delegate to matching mise tasks and forward all arguments.
-- Must support the BSD command-line tools provided by macOS.
 - Installation must replace obsolete Lefthook launchers.
 
 ## .mise/tasks/git/stage-fixed.sh
