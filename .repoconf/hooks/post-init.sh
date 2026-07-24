@@ -45,7 +45,6 @@ fnox_toml="$dir/fnox.toml"
       fi
     done
 
-  tomli set --filepath "$cargo_toml" --in-place "workspace.metadata.details.summary" ""
   tomli set --filepath "$cargo_toml" --in-place "workspace.metadata.details.title" ""
   tomli delete --filepath "$cargo_toml" --in-place --if-exists "workspace.package.description"
   for field in repository homepage; do

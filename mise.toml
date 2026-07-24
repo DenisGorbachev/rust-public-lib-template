@@ -61,6 +61,7 @@ run = "cargo test --workspace --doc --all-features --no-fail-fast --quiet"
 
 # "fix" may modify the files that are read by "test", so "test" may actually test an old version. This risk is small and acceptable, because the tests are re-run in CI.
 [tasks."pre-commit"]
+alias = "pre-merge-commit"
 depends = ["fix-and-stage", "test"]
 
 [tasks."fix-and-stage"]
@@ -80,13 +81,13 @@ depends = ["fix:code", "fix:aux"]
 depends = ["fix:configs", "fix:docs", "fix:agents", "fix:readme"]
 
 [tasks."fix:configs"]
-depends = ["fix:fnox"]
+depends = ["fix:cargo", "fix:fnox"]
 
 [tasks."fix:code"]
 depends = ["fix:name", "fix:code:style"]
 
 [tasks."fix:code:warnings"]
-depends = ["fix:name"]
+depends = ["fix:cargo"]
 # second pass is needed because "cargo clippy --fix" exits with 0 even if some warnings remain
 env = { __CARGO_FIX_YOLO = 'yeah' }
 run = """

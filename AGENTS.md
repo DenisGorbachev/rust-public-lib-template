@@ -425,7 +425,6 @@ Notes:
 
 * Never use the following operators: `+, +=, -, -=, *, *=, /, /=, %, %=, -, <<, <<=, >>, >>=`
 * Never use the following traits: `core::ops::{Add, AddAssign, Sub, SubAssign, Mul, MulAssign, Div, DivAssign, Rem, RemAssign, Neg, Shl, ShlAssign, Shr, ShrAssign}`
-* Every crate must have a `#![deny(clippy::arithmetic_side_effects)]` attribute
 * Prefer `checked` versions of arithmetic operations
 * Every call to an `overflowing`, `saturating`, `wrapping` version must have a single-line comment above it that starts with "SAFETY: " and describes why calling this version is safe in this specific case
 * Use `num` crate items if necessary (for example, to implement a function that calls arithmetic methods on a generic type)
@@ -1934,6 +1933,7 @@ unused_import_braces = "deny"
 
 [workspace.lints.clippy]
 absolute_paths = "deny"
+arithmetic_side_effects = "deny"
 
 [package]
 name = "rust-pre-public-lib-template"
@@ -1984,6 +1984,4 @@ pass = { type = "password-store", prefix = "rust-pre-public-lib-template/" }
 
 ```rust
 //! This is a module-level comment for a Rust lib
-
-#![deny(clippy::arithmetic_side_effects)]
 ```

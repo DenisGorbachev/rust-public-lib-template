@@ -30,7 +30,6 @@ rollback_transaction() {
     [[ ! -f $backup_root/files.tar ]] || tar -xPf "$backup_root/files.tar"
   fi
   # PRUNING: Delete only temporary transaction backups after success or rollback because the originals have been committed or restored.
-  # Use `-rf` because BSD `rm` does not support GNU long options.
   rm -rf "$backup_root"
   exit "$status"
 }
@@ -52,7 +51,6 @@ apply_rename() (
   local kebab_pattern="\b(?:$name_new_kebab_case|$name_old_kebab_case)\b"
   local snake_pattern="\b(?:$name_new_snake_case|$name_old_snake_case)(\b|_)"
 
-  # Use `-d` because BSD `mktemp` does not support GNU `--directory`.
   local backup_root
   backup_root=$(mktemp -d "${TMPDIR:-/tmp}/fix-name.XXXXXX")
   local manifest_paths_file="$backup_root/manifest-paths"
@@ -83,7 +81,7 @@ apply_rename() (
   if [[ -f $cargo_lock ]]; then
     jq --null-input --join-output --raw-output --arg path "$cargo_lock" '$path + "\u0000"' >>"$backup_paths_file"
   fi
-  # Archive every mutable file before editing so a failure after a directory move can restore the original workspace. Use `-P` because the BSD and GNU long option names differ.
+  # Archive every mutable file before editing so a failure after a directory move can restore the original workspace.
   tar -cPf "$backup_root/files.tar" --null -T "$backup_paths_file"
 
   local path package_dir package_name package_name_new destination rollbacks_file_new

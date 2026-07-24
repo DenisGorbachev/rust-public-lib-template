@@ -11,16 +11,12 @@
       - `details`
         - `name`
         - `title`
-        - `tagline`
-        - `summary`
-        - `announcement`
-  - When `package` exists:
-    - `package`
+    - `lints`
+  - If `package` exists
+    - Then: `package`
       - `metadata`
         - `details`
-    - `lints`
-      - `workspace`
-        - Must equal `true`.
+- Every workspace package manifest must contain `lints.workspace = true`.
 - Must not contain:
   - `workspace`
     - `package`
@@ -35,11 +31,13 @@
 - Must use `cargo metadata` to discover workspace packages, manifests, targets, and resolved properties.
 - Must normalize GitHub origin URLs and validate every non-empty package repository against the origin.
 - For the root repository check, must prefer `workspace.package.repository` and fall back to the resolved root `package.repository`.
-- Must enable each README when `package.metadata.details.readme.generate ?? workspace.metadata.details.readme.generate ?? true` is `true`.
-- When enabled, must generate:
-  - One README beside every workspace package manifest.
-  - An `Other packages` section in the root package README.
-  - A heading and package README links at the repository root for a virtual workspace.
+- If `package.metadata.details.readme.generate ?? workspace.metadata.details.readme.generate ?? true` is `true` for a README
+  - Then: Must enable it.
+- If a README is enabled
+  - Then:
+    - Must generate one README beside every workspace package manifest.
+    - Must generate an `Other packages` section in the root package README.
+    - Must generate a heading and package README links at the repository root for a virtual workspace.
 - Must choose titles in this order:
   - Package README: non-empty `package.metadata.details.title`, then `package.name`.
   - Virtual workspace: non-empty `workspace.metadata.details.title`, `package.metadata.details.title`, `workspace.metadata.details.name`, then `package.name`.
@@ -52,12 +50,15 @@
 ## AGENTS.ts
 
 - Must preserve `renderXmlFile`, `runAgentDocsList`, `includeAgentDocs`, and `includeAllFiles`.
-- Must include `.agents/project.md` when present.
+- If `.agents/project.md` is present
+  - Then: Must include it.
 - Must use `cargo metadata` to:
   - Include requested files only from workspace members, plus the root `Cargo.toml`.
   - Include repository docs for dependencies used directly by a workspace member.
   - Include requested dependency-owned docs from any matching metadata package, selecting the highest version, then manifest path, before checking whether the file exists.
-- Included paths must be repository-relative, sorted, and skipped when absent.
+- Included paths must be repository-relative and sorted.
+- If a requested path is absent
+  - Then: Must skip it.
 - Must preserve Markdown heading shifts and collision-safe language-tagged code fences.
 - Must render to a temporary file beside `AGENTS.md`, replace it only after success, and clean up the temporary file.
 
@@ -82,6 +83,19 @@
 - Must validate that `providers.keychain.service` and `providers.pass.prefix` equal `git:repo-name` and `git:repo-name/`, respectively.
 - Must not migrate secrets between old and new identifiers.
 
+## .mise/tasks/fix/cargo.sh
+
+- Must depend on `fix:name`.
+- Must discover workspace package manifests with `cargo metadata`.
+- If a manifest has no `lints` key
+  - Then: Must add `lints.workspace = true`.
+- If a manifest has `lints.workspace = true`
+  - Then: Must preserve it.
+- If a manifest has any other `lints` configuration
+  - Then:
+    - Must preserve it.
+    - Must fail.
+
 ## .mise/tasks/git/repo-name.sh
 
 - Must derive the name from the final component of `origin`, removing a trailing slash and `.git`.
@@ -90,7 +104,7 @@
 
 ## .mise/tasks/git/install-hooks.sh
 
-- Must install executable `pre-commit`, `post-commit`, and `commit-msg` hooks in Git's resolved hooks directory.
+- Must install executable `pre-commit`, `pre-merge-commit`, `post-commit`, and `commit-msg` hooks in Git's resolved hooks directory.
 - Hooks must delegate to matching mise tasks and forward all arguments.
 - Installation must replace obsolete Lefthook launchers.
 
@@ -102,7 +116,9 @@
 ## .mise/tasks/git/repair-index.sh
 
 - Must unset `GIT_INDEX_FILE` and repair real-index paths left stale by temporary-index commits.
-- Must update a staged path only when its worktree content equals `HEAD`, preserving genuine worktree changes.
+- If a staged path's worktree content equals `HEAD`
+  - Then: Must update it.
+  - Else: Must preserve the worktree change.
 - Must use NUL-delimited literal paths and propagate unexpected Git errors.
 
 ## .repoconf/hooks/post-init.sh
@@ -114,8 +130,11 @@
 - For every package discovered by `cargo metadata`, must:
   - Empty `package.metadata.details.title`.
   - Remove `package.description`.
-  - Remove direct `repository` and `homepage` when no repository URL is available.
-- Must always empty `workspace.metadata.details.{summary,title}` and remove `workspace.package.description`.
-- Must set `workspace.package.{repository,homepage}` to the GitHub URL, or remove them when no URL is available.
+  - If no repository URL is available
+    - Then: Remove direct `repository` and `homepage`.
+- Must always empty `workspace.metadata.details.title` and remove `workspace.package.description`.
+- If a repository URL is available
+  - Then: Must set `workspace.package.{repository,homepage}` to it.
+  - Else: Must remove `workspace.package.{repository,homepage}`.
 - May rely on the template root defining the workspace fields it updates.
 - Must update fnox identifiers, regenerate READMEs, build, test, stage, and commit.
