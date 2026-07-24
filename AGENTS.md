@@ -425,7 +425,6 @@ Notes:
 
 * Never use the following operators: `+, +=, -, -=, *, *=, /, /=, %, %=, -, <<, <<=, >>, >>=`
 * Never use the following traits: `core::ops::{Add, AddAssign, Sub, SubAssign, Mul, MulAssign, Div, DivAssign, Rem, RemAssign, Neg, Shl, ShlAssign, Shr, ShrAssign}`
-* Every crate must have a `#![deny(clippy::arithmetic_side_effects)]` attribute
 * Prefer `checked` versions of arithmetic operations
 * Every call to an `overflowing`, `saturating`, `wrapping` version must have a single-line comment above it that starts with "SAFETY: " and describes why calling this version is safe in this specific case
 * Use `num` crate items if necessary (for example, to implement a function that calls arithmetic methods on a generic type)
@@ -479,16 +478,16 @@ You are running in a sandbox with limited network access.
 ### Cargo.toml
 
 ```toml
-[package]
-name = "rust-public-lib-template"
+[workspace]
+resolver = "3"
+
+[workspace.package]
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.93.1"
-description = "A template for a public Rust library"
 license = "Apache-2.0 OR MIT"
 homepage = "https://github.com/DenisGorbachev/rust-public-lib-template"
 repository = "https://github.com/DenisGorbachev/rust-public-lib-template"
-readme = "README.md"
 keywords = []
 categories = []
 exclude = [
@@ -504,28 +503,45 @@ exclude = [
     "deno.json",
     "commitlint.config.mjs",
     "fnox.toml",
-    "lefthook.yml",
     "mise.toml",
     "rumdl.toml",
     "rustfmt.toml",
     ".yolobox"
 ]
 
-[package.metadata.details]
-title = "A template for a public Rust library"
-tagline = ""
-summary = ""
-announcement = ""
+[workspace.metadata.details]
+name = "rust-public-lib-template"
+title = "Rust public library template"
 readme = { generate = false }
 
-[lints.rust]
+[workspace.lints.rust]
 redundant_imports = "deny"
 unused_import_braces = "deny"
 # unused_qualifications must not be "deny" because our code style has multiple `use Foo::*;`, and some macros (derive_more::Display, strum::Display, strum::EnumString) produce code with full qualifications
 # unused_qualifications = "deny"
 
-[lints.clippy]
+[workspace.lints.clippy]
 absolute_paths = "deny"
+arithmetic_side_effects = "deny"
+
+[package]
+name = "rust-public-lib-template"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "A template for creating public Rust libraries."
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+keywords.workspace = true
+categories.workspace = true
+exclude.workspace = true
+
+[package.metadata.details]
+title = "Rust public library template"
+
+[lints]
+workspace = true
 
 [dependencies]
 #derive-getters = { version = "0.5.0", features = ["auto_copy_getters"] }
@@ -556,6 +572,5 @@ pass = { type = "password-store", prefix = "rust-public-lib-template/" }
 ```rust
 //! This is a module-level comment for a Rust lib
 
-#![deny(clippy::arithmetic_side_effects)]
 #![cfg_attr(not(test), deny(unused_crate_dependencies))]
 ```
