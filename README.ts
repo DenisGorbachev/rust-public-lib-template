@@ -14,9 +14,6 @@ const ReadmeSchema = z.object({
 
 const PackageDetailsSchema = z.object({
   title: z.string().nullable().optional(),
-  tagline: z.string().optional(),
-  summary: z.string().optional(),
-  announcement: z.string().optional(),
   readme: ReadmeSchema,
   peers: z.array(z.string()).default([]).describe("Packages that should be installed alongside this package"),
 }).default({})

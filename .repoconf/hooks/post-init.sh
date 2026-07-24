@@ -25,8 +25,7 @@ fnox_toml="$dir/fnox.toml"
     repo_name=$(mise run --quiet git:repo-name)
   fi
 
-  # Use `-f` because BSD `rm` does not support GNU `--force`.
-  rm -f LICENSE-APACHE LICENSE-MIT
+  rm -f README.md LICENSE-APACHE LICENSE-MIT
 
   mise run fix:name "$repo_name"
   cargo metadata --manifest-path "$cargo_toml" --format-version 1 --no-deps |
@@ -46,7 +45,6 @@ fnox_toml="$dir/fnox.toml"
       fi
     done
 
-  tomli set --filepath "$cargo_toml" --in-place "workspace.metadata.details.summary" ""
   tomli set --filepath "$cargo_toml" --in-place "workspace.metadata.details.title" ""
   tomli delete --filepath "$cargo_toml" --in-place --if-exists "workspace.package.description"
   for field in repository homepage; do
