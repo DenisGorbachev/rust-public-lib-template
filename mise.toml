@@ -56,6 +56,9 @@ run = "cargo clippy --locked --workspace --all-targets --all-features -- -D warn
 [tasks."lint:code:style"]
 run = "cargo fmt --all -- --check"
 
+[tasks."lint:shell"]
+run = [{ task = "fix:shell", args = ["--check"] }]
+
 [tasks."lint:docs"]
 run = "rumdl check"
 
@@ -93,7 +96,7 @@ depends = ["fix:configs", "fix:docs", "fix:agents", "fix:readme"]
 depends = ["fix:cargo", "fix:fnox"]
 
 [tasks."fix:code"]
-depends = ["fix:name", "fix:code:style"]
+depends = ["fix:name", "fix:code:style", "fix:shell"]
 
 [tasks."fix:code:warnings"]
 depends = ["fix:cargo"]
@@ -134,7 +137,7 @@ output = "interleave"
 quiet = true
 
 [tasks."agent:on:stop"]
-depends = ["cargo:validate-config", "lint:shell"]
+depends = ["cargo:validate-config", "fix:shell"]
 run = [{ task = "fix" }, { task = "agent:test" }]
 
 [tasks."agent:test"]
