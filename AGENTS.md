@@ -102,7 +102,7 @@ Write code that minimizes losses:
 
 #### Messages from agent to user
 
-- Use `~` in paths.
+- Use `~` for home-directory paths in prose, code blocks, and link labels; link destinations may remain absolute.
 - Write structured messages.
 - Don't mention successful verifications and checks unless asked explicitly.
 - When replying to user messages: use `>` to quote their parts.
